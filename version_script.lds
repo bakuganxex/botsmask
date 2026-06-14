@@ -1,4 +1,4 @@
-RR_STATUSMASK_ABI_1.0 {
+{
 	global:
 		GiveFnptrsToDll;
 		Meta_Attach;
