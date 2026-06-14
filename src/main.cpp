@@ -4,10 +4,6 @@ cvar_t g_cv_rr_statusmask_enable = { "rr_statusmask_enable", "0", FCVAR_SERVER }
 cvar_t g_cv_rr_statusmask_mode = { "rr_statusmask_mode", "1", FCVAR_SERVER };
 cvar_t g_cv_rr_statusmask_debug = { "rr_statusmask_debug", "1", FCVAR_SERVER };
 
-#ifndef PRINT_HIGH
-#define PRINT_HIGH 2
-#endif
-
 static bool IsStatusLikeCommand(const char *cmd)
 {
 	if (!cmd || !cmd[0])
@@ -55,8 +51,10 @@ bool StatusMask_ValidateCommand(IRehldsHook_ValidateCommand *chain, const char *
 		edict_t *ed = client->GetEdict();
 		if (ed)
 		{
-			g_engfuncs.pfnClientPrintf(ed, PRINT_HIGH,
+			static char blockMsg[256];
+			snprintf(blockMsg, sizeof(blockMsg),
 				"[RR_STATUSMASK] command '%s' blocked (PoC block mode)\n", cmd);
+			g_engfuncs.pfnClientPrintf(ed, print_console, blockMsg);
 		}
 	}
 
