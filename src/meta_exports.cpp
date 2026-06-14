@@ -1,14 +1,13 @@
 /*
- * Metamod entry points — MUST compile without precompiled.h / -fvisibility=hidden
- * so dlsym("Meta_Query") works on all Metamod builds.
+ * Metamod entry points — compile without precompiled.h / -fvisibility=hidden.
  */
 #include <string.h>
 
+#include <osdep.h>
 #include <meta_api.h>
 #include <plinfo.h>
 #include <mutil.h>
-#include <osdep.h>
-#include <extdll.h>
+#include <eiface.h>
 
 extern plugin_info_t Plugin_info;
 extern META_FUNCTIONS gMetaFunctionTable;
