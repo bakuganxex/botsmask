@@ -10,6 +10,5 @@ extern cvar_t g_cv_rr_statusmask_mode;
 extern cvar_t g_cv_rr_statusmask_debug;
 
 extern enginefuncs_t g_engfuncs;
-extern metamodfuncs_t *gpMetaFuncs;
 extern meta_globals_t *gpMetaGlobals;
 extern mutil_funcs_t *gpMetaUtilFuncs;

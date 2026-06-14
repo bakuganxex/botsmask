@@ -4,7 +4,9 @@ cvar_t g_cv_rr_statusmask_enable = { "rr_statusmask_enable", "0", FCVAR_SERVER }
 cvar_t g_cv_rr_statusmask_mode = { "rr_statusmask_mode", "1", FCVAR_SERVER };
 cvar_t g_cv_rr_statusmask_debug = { "rr_statusmask_debug", "1", FCVAR_SERVER };
 
-metamodfuncs_t *gpMetaFuncs = nullptr;
+#ifndef PRINT_HIGH
+#define PRINT_HIGH 2
+#endif
 
 static bool IsStatusLikeCommand(const char *cmd)
 {
