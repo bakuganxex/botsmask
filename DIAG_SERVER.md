@@ -42,6 +42,22 @@ Meta_Detach
 
 Если `nm: no symbols` или пусто — файл **повреждён при FTP** (заливай Binary, не Auto).
 
+## 2b. GLIBC (частая причина badf на Docker)
+
+Сборка на **ubuntu-latest** тянет `dlopen@GLIBC_2.34` — старый HLDS Docker не откроет `.so`.
+
+Проверка на сервере:
+```bash
+ldd addons/rr_statusmask/rr_statusmask_mm_i386.so
+strings addons/rr_statusmask/rr_statusmask_mm_i386.so | grep GLIBC_ | sort -u
+```
+
+**Плохо:** `GLIBC_2.34`, `GLIBC_2.38` в выводе `strings`, или `ldd` → `version GLIBC_2.34 not found`.
+
+**Хорошо:** максимум `GLIBC_2.31` или ниже (сборка с **ubuntu-20.04** в Actions).
+
+Скачай **новый** artifact после зелёного run с ubuntu-20.04.
+
 ## 3. Проверь plugins.ini
 
 ```ini

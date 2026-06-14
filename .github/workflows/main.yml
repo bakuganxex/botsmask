@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,6 +42,12 @@ jobs:
           echo "=== Meta exports ==="
           nm -D build/rr_statusmask_mm_i386.so | grep -E 'Meta_|GiveFnptrsToDll'
           nm -D build/rr_statusmask_mm_i386.so | grep ' Meta_Query$'
+          echo "=== GLIBC versions (must be <= 2.31 for old HLDS docker) ==="
+          strings build/rr_statusmask_mm_i386.so | grep 'GLIBC_' | sort -Vu
+          if strings build/rr_statusmask_mm_i386.so | grep -q 'GLIBC_2.3[4-9]'; then
+            echo "ERROR: .so requires GLIBC >= 2.34 — too new for many CS 1.6 servers"
+            exit 1
+          fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
