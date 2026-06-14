@@ -1,0 +1,48 @@
+name: Build rr_statusmask
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build tools (i386)
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            g++-multilib \
+            gcc-multilib \
+            cmake \
+            curl \
+            unzip \
+            make \
+            file
+
+      - name: Fix Windows line endings in shell scripts
+        run: |
+          sed -i 's/\r$//' fetch_deps.sh compile.sh
+          chmod +x fetch_deps.sh compile.sh
+
+      - name: Build .so
+        run: |
+          set -eux
+          bash ./fetch_deps.sh
+          bash ./compile.sh
+          test -f build/rr_statusmask_mm_i386.so
+          ls -la build/rr_statusmask_mm_i386.so
+          file build/rr_statusmask_mm_i386.so
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rr_statusmask_mm_i386
+          path: build/rr_statusmask_mm_i386.so
+          if-no-files-found: error

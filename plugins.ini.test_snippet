@@ -1,0 +1,3 @@
+// TEST SERVER ONLY — add to addons/metamod/plugins.ini (do NOT touch production)
+// Place after reunion/rechecker, before yapb/amxx:
+linux addons/rr_statusmask/rr_statusmask_mm_i386.so
