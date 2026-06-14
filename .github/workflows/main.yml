@@ -41,7 +41,14 @@ jobs:
           file build/rr_statusmask_mm_i386.so
           echo "=== exported Meta symbols ==="
           nm -D build/rr_statusmask_mm_i386.so | grep -E 'Meta_|GiveFnptrsToDll' || (echo "MISSING Meta exports!" && exit 1)
-          nm -D build/rr_statusmask_mm_i386.so | grep ' Meta_Query$' || (echo "Meta_Query must be unversioned for dlsym!" && exit 1)
+          echo "=== dlsym test ==="
+          python3 - <<'PY'
+import ctypes, sys
+lib = ctypes.CDLL('./build/rr_statusmask_mm_i386.so')
+for sym in ('Meta_Query', 'Meta_Attach', 'Meta_Detach', 'GiveFnptrsToDll'):
+    getattr(lib, sym)
+    print('OK', sym)
+PY
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

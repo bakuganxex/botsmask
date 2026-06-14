@@ -1,6 +1,17 @@
 # Диагностика badf load на test-сервере
 
-`badf load` = Metamod **не смог открыть/распознать** плагин (нет `Meta_Query` или файл битый/не там).
+`badf load` = Metamod **не открыл** `.so` или **не нашёл Meta_Query** (часто: залит ZIP вместо .so, битый FTP, неверный путь).
+
+## 0. Частая ошибка: залит ZIP, а не .so
+
+GitHub Artifacts — это **ZIP-архив**. Сначала распакуй, потом заливай **только** файл `rr_statusmask_mm_i386.so`.
+
+Проверка на сервере:
+```bash
+head -c 4 addons/rr_statusmask/rr_statusmask_mm_i386.so | od -An -tx1
+```
+Должно быть: `7f 45 4c 46` (ELF).  
+Если `50 4b` — это ZIP, Metamod даст **badf**.
 
 ## 1. Проверь файл на сервере
 
