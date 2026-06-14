@@ -1,4 +1,5 @@
 #include "precompiled.h"
+#include "meta_exports.h"
 
 plugin_info_t Plugin_info =
 {
@@ -9,7 +10,7 @@ plugin_info_t Plugin_info =
 	"RR-GAME",
 	"PoC: block client status/stat via ReHLDS ValidateCommand",
 	"RR_STATUSMASK PoC",
-	PT_ANYTIME,
+	PT_STARTUP,
 	PT_ANYTIME,
 };
 

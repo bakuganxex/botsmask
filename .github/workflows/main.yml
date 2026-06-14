@@ -39,6 +39,8 @@ jobs:
           test -f build/rr_statusmask_mm_i386.so
           ls -la build/rr_statusmask_mm_i386.so
           file build/rr_statusmask_mm_i386.so
+          echo "=== exported Meta symbols ==="
+          nm -D build/rr_statusmask_mm_i386.so | grep -E 'Meta_|GiveFnptrsToDll' || (echo "MISSING Meta exports!" && exit 1)
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
