@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -g0 -O2 -fvisibility=hidden -fvisibility-inlines-hidden -fno-rtti -ffunction-sections -fdata-sections")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-variable -Wno-unused-function -Wno-sign-compare -Wno-unused-local-typedefs")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -ldl -static-libgcc -static-libstdc++ -Wl,-gc-sections")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -ldl -static-libgcc -static-libstdc++ -Wl,-gc-sections -Wl,--version-script=${PROJECT_SOURCE_DIR}/version_script.lds")
 
 set(PROJECT_SRC_DIR
 	"${PROJECT_SOURCE_DIR}/"
@@ -25,14 +25,11 @@ set(PROJECT_VENDOR_DIR
 set(RR_STATUSMASK_SRCS
 	"src/main.cpp"
 	"src/meta_api.cpp"
-	"src/meta_exports.cpp"
 	"src/h_export.cpp"
 	"src/engine_rehlds.cpp"
 	"src/sdk_util.cpp"
 	"vendor/public/interface.cpp"
 )
-
-set(RR_EXPORT_SRCS src/meta_exports.cpp)
 
 include_directories(
 	${PROJECT_SRC_DIR}
@@ -50,4 +47,3 @@ add_definitions(
 
 add_library(rr_statusmask_mm_i386 SHARED ${RR_STATUSMASK_SRCS})
 set_target_properties(rr_statusmask_mm_i386 PROPERTIES PREFIX "" COMPILE_FLAGS "-m32" LINK_FLAGS "-m32" POSITION_INDEPENDENT_CODE ON)
-set_source_files_properties(${RR_EXPORT_SRCS} PROPERTIES COMPILE_FLAGS "-m32 -fvisibility=default -O2")
